@@ -1,7 +1,7 @@
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
-
+import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
@@ -14,7 +14,7 @@ const Row = (props) => {
     const currentlyEditing = editIndex === index;
 
     return (
-        <TableRow key={`tr-${index}`} selectable={false}>
+        <TableRow key={`tr-${index}`} selectable="false">
             {columns.map((column, columnIndex) => (
                 <TableCell key={`trc-${columnIndex}`}>
                     {currentlyEditing ? (
@@ -29,14 +29,22 @@ const Row = (props) => {
                 </TableCell>
             ))}
             <TableCell>
-                {currentlyEditing ? (
-                    <DoneIcon onClick={() => stopEditing()} />
-                ) : (
-                        <EditIcon onClick={() => startEditing(index)} />
-                    )}
+                {currentlyEditing ?
+                    (
+                        <IconButton aria-label="Done" onClick={() => stopEditing()}>
+                            <DoneIcon />
+                        </IconButton>
+                    ) : (
+                        <IconButton aria-label="Edit" onClick={() => startEditing(index)}>
+                            <EditIcon />
+                        </IconButton>
+                    )
+                }
             </TableCell>
             <TableCell>
-                <DeleteIcon onClick={() => handleRemove(index)} />
+                <IconButton aria-label="delete" onClick={() => handleRemove(index)}>
+                    <DeleteIcon />
+                </IconButton>
             </TableCell>
         </TableRow>
     );

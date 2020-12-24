@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCustomers } from './services/CustomerService';
 import Widget from './components/Widget';
-import { customerColumns } from './Constants';
+import { customerColumns, customerInputs } from './Constants';
 
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="App">
-      <Widget data={customers} columns={customerColumns}/>
+      <Widget title="Customers" data={customers} columns={customerColumns} inputs={customerInputs}/>
     </div>
   );
 }

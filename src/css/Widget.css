@@ -1,3 +1,7 @@
 .widget {
-    width: 700px;
+    width: 900px;
+}
+
+.widget h1{
+    margin-left: 20px;
 }

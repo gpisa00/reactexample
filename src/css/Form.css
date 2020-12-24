@@ -1,0 +1,11 @@
+.input-group {
+    margin-left: 20px;
+}
+
+.input-group button{
+    margin-top: 20px;
+}
+
+.input-group .input-text{
+    padding-right: 20px;
+}
