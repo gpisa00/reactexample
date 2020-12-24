@@ -17,7 +17,7 @@ const Row = (props) => {
         <TableRow key={`tr-${index}`} selectable="false">
             {columns.map((column, columnIndex) => (
                 <TableCell key={`trc-${columnIndex}`}>
-                    {currentlyEditing ? (
+                    {currentlyEditing && columnIndex !== 0? (
                         <TextField
                             name={column.field}
                             onChange={e => handleEditing(e, column.field, index)}
@@ -31,7 +31,7 @@ const Row = (props) => {
             <TableCell>
                 {currentlyEditing ?
                     (
-                        <IconButton aria-label="Done" onClick={() => stopEditing()}>
+                        <IconButton aria-label="Done" onClick={() => stopEditing(index)}>
                             <DoneIcon />
                         </IconButton>
                     ) : (
