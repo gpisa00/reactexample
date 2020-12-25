@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getCustomers, deleteCustomer } from './services/CustomerService';
 import Widget from './components/Widget';
 import { customerColumns, customerInputs } from './Constants';
+import axios from 'axios';
 
+const baseUrlCustomer = 'https://app-restexample.herokuapp.com/rest/customers';
 
 function App() {
 
@@ -10,24 +11,24 @@ function App() {
   const [customerEditIndex, setCustomerEditIndex] = useState(-1);
 
   useEffect(() => {
-    let mounted = true;
-    getCustomers()
-      .then(items => {
-        if (mounted) {
-          setCustomers(items.content)
-        }
+    axios.get(baseUrlCustomer)
+      .then(response => {
+        setCustomers(response.data.content);
+      }).catch(error => {
+        alert(error.response.data.message);
       })
-    return () => mounted = false;
   }, []);
 
   const handleCustomerRemove = index => {
-  
-    const idToDelete = customers[index].id;
-
-    if(deleteCustomer(idToDelete)){
-      const newCustomers = customers.filter(((row, j) => j !== index));
-      setCustomers(newCustomers);
-    }
+    axios.delete(baseUrlCustomer + "/" + customers[index].id)
+      .then(response => {
+        if (response.status === 200) {
+          const newCustomers = customers.filter(((row, j) => j !== index));
+          setCustomers(newCustomers);
+        }
+      }).catch(error => {
+        alert(error.response.data.message);
+      })
   };
 
   const startCustomerEditing = index => {
@@ -35,8 +36,22 @@ function App() {
   };
 
   const stopCustomerEditing = index => {
-    console.log(index);
-    setCustomerEditIndex(-1);
+    axios.put(baseUrlCustomer, customers[index])
+      .then(response => {
+        const newCustomers = customers.filter(((row, j) => j !== index));
+        newCustomers[index] = response.data;
+        setCustomers(newCustomers);
+        setCustomerEditIndex(-1);
+      }).catch(error => {
+        alert(error.response.data.message);
+      })
+  };
+
+  const handleCustomerEditing = (event, field, index) => {
+    const { value } = event.target;
+    setCustomers(customers.map(
+      (row, j) => (j === index ? { ...row, [field]: value } : row)
+    ));
   };
 
 
@@ -51,6 +66,7 @@ function App() {
         startEditing={startCustomerEditing}
         stopEditing={stopCustomerEditing}
         handleRemove={handleCustomerRemove}
+        handleEditing={handleCustomerEditing}
       />
 
     </div>

@@ -4,7 +4,7 @@ import Form from "./Form";
 
 const Widget = (props) => {
 
-    const { title, data, columns, inputs, editIndex, startEditing, stopEditing, handleRemove } = props;
+    const { title, data, columns, inputs, editIndex, startEditing, stopEditing, handleRemove, handleEditing } = props;
 
     return (
         <div className="widget" >
@@ -17,6 +17,7 @@ const Widget = (props) => {
                 startEditing={startEditing}
                 stopEditing={stopEditing}
                 handleRemove={handleRemove}
+                handleEditing={handleEditing}
             />
         </div>
     );
