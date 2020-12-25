@@ -5,28 +5,31 @@ import SaveIcon from '@material-ui/icons/Save';
 
 const Form = (props) => {
 
-    const { inputs } = props;
+    const { inputs, handleInputsEditing, save } = props;
 
     return (
         <div className="input-group">
             <form noValidate autoComplete="off">
-                    {inputs.map((input, inputIndex) => (
-                        <TextField
-                            key={inputIndex}
-                            name={input.name}
-                            label={input.label}
-                            variant="outlined"
-                            className="input-text"
-                        />
-                    ))}
-                    <br />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        startIcon={<SaveIcon />}
-                    >
-                        Save
+                {inputs.map((input, inputIndex) => (
+                    <TextField
+                        key={inputIndex}
+                        name={input.name}
+                        label={input.label}
+                        variant="outlined"
+                        className="input-text"
+                        value={input.valueInput}
+                        onChange={e => handleInputsEditing(e, inputIndex)}
+                    />
+                ))}
+                <br />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    startIcon={<SaveIcon />}
+                    onClick={e => save(e)}
+                >
+                    Save
                     </Button>
             </form>
         </div>

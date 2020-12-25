@@ -4,12 +4,12 @@ import Form from "./Form";
 
 const Widget = (props) => {
 
-    const { title, data, columns, inputs, editIndex, startEditing, stopEditing, handleRemove, handleEditing } = props;
+    const { title, data, columns, inputs, handleInputsEditing, editIndex, startEditing, stopEditing, handleRemove, handleEditing, save } = props;
 
     return (
         <div className="widget" >
             <h1>{title}</h1>
-            <Form inputs={inputs} />
+            <Form inputs={inputs} handleInputsEditing={handleInputsEditing} save={save} />
             <TableGrid
                 data={data}
                 columns={columns}

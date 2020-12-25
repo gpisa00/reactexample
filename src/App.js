@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Widget from './components/Widget';
-import { customerColumns, customerInputs } from './Constants';
+import { customerColumns } from './Constants';
 import axios from 'axios';
 
 const baseUrlCustomer = 'https://app-restexample.herokuapp.com/rest/customers';
@@ -9,6 +9,11 @@ function App() {
 
   const [customers, setCustomers] = useState([]);
   const [customerEditIndex, setCustomerEditIndex] = useState(-1);
+  const [customerInputs, setCustomerInputs] = useState([
+    { name: 'firstName', label: 'First Name', valueInput: '' },
+    { name: 'lastName', label: 'Last Name', valueInput: '' },
+    { name: 'organization', label: 'Organization', valueInput: '' }
+  ])
 
   useEffect(() => {
     axios.get(baseUrlCustomer)
@@ -54,6 +59,33 @@ function App() {
     ));
   };
 
+  const handleCustomerInputsEditing = (event, index) => {
+    const { value } = event.target;
+    setCustomerInputs(customerInputs.map(
+      (row, j) => (j === index ? { ...row, valueInput: value } : row)
+    ));
+
+  }
+
+  const saveCustomer = () => {
+    let customer = {};
+    const newCustomerInputs = customerInputs.map(
+      (row) => {
+        customer[row.name] = row.valueInput;
+        row.valueInput = '';
+        return row;
+      }
+    );
+
+    axios.post(baseUrlCustomer, customer)
+      .then(response => {
+        const newCustomers = [...customers, response.data];
+        setCustomers(newCustomers);
+        setCustomerInputs(newCustomerInputs);
+      }).catch(error => {
+        alert(error.response.data.message);
+      })
+  }
 
   return (
     <div className="App">
@@ -62,11 +94,13 @@ function App() {
         data={customers}
         columns={customerColumns}
         inputs={customerInputs}
+        handleInputsEditing={handleCustomerInputsEditing}
         editIndex={customerEditIndex}
         startEditing={startCustomerEditing}
         stopEditing={stopCustomerEditing}
         handleRemove={handleCustomerRemove}
         handleEditing={handleCustomerEditing}
+        save={saveCustomer}
       />
 
     </div>
