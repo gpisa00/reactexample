@@ -43,9 +43,10 @@ function App() {
   const stopCustomerEditing = index => {
     axios.put(baseUrlCustomer, customers[index])
       .then(response => {
-        const newCustomers = customers.filter(((row, j) => j !== index));
-        newCustomers[index] = response.data;
-        setCustomers(newCustomers);
+        const updateCustomers = customers.map(
+          (row, j) => j !== index ? row : response.data
+        );
+        setCustomers(updateCustomers);
         setCustomerEditIndex(-1);
       }).catch(error => {
         alert(error.response.data.message);
